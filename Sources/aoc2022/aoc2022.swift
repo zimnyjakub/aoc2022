@@ -3,7 +3,11 @@ import Foundation
 @main
 public struct aoc2022 {
     public static func main() {
-        
+        day1()
+    }
+    
+    
+    static func day1() {
         if let filepath = Bundle.module.path(forResource:"01_input", ofType:"txt") {
             do {
                 let filecontent = try String(contentsOfFile: filepath)
@@ -19,7 +23,7 @@ public struct aoc2022 {
                     let calorieInt = Int(calorieline) ?? 0
                     current.append(calorieInt)
                 }
-
+                
                 let summed = elves
                     .compactMap { $0.reduce(0) {$0 + $1} }
                     .max()
@@ -37,9 +41,6 @@ public struct aoc2022 {
                 print("error")
             }
         }
-        
-        //        print(aoc2022().text)
     }
-    
     
 }
