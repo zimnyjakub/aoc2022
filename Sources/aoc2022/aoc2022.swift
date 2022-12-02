@@ -1,10 +1,41 @@
 import Foundation
 
+
+
+let v: [String:Int] = [
+    "X": 1,
+    "Y": 2,
+    "Z": 3,
+]
+
 @main
 public struct aoc2022 {
     public static func main() {
-        day1()
+        //        day1()
+        day2()
     }
+    
+    static func day2() {
+        if let filepath = Bundle.module.path(forResource:"02_input", ofType:"txt") {
+            do {
+                let filecontent = try String(contentsOfFile: filepath)
+                
+                var score = 0
+                for gameline in filecontent.components(separatedBy: "\n") {
+                    let opponentMove = gameline.components(separatedBy: " ")[0]
+                    let yourMove = gameline.components(separatedBy: " ")[1]
+                    score += haveYouWonRPS(opponentMove, yourMove).rawValue
+                    score += v[yourMove] ?? 0
+                }
+                
+                print(score)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    
     
     
     static func day1() {
@@ -37,10 +68,27 @@ public struct aoc2022 {
                 
                 print(summed ?? 0)
                 print (topThree)
-            }catch  {
+            } catch {
                 print("error")
             }
         }
     }
-    
 }
+
+enum RPSResult: Int {
+    case won = 6
+    case tie = 3
+    case lost = 0
+}
+
+func haveYouWonRPS(_ opp: String,_ you: String) -> RPSResult {
+    switch (opp, you) {
+    case ("A", "X"), ("B","Y"), ("C","Z"):
+        return .tie
+    case ("A", "Y"), ("B","Z"), ("C","X"):
+        return .won
+    default:
+        return .lost
+    }
+}
+
