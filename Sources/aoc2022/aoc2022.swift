@@ -16,10 +16,10 @@ public struct aoc2022 {
                 
                 var score = 0
                 for gameline in filecontent.components(separatedBy: "\n") {
-                    let opponentMove = gameline.components(separatedBy: " ")[0]
-                    let yourMove = gameline.components(separatedBy: " ")[1]
+                    let opponentMove = toRPSMove(gameline.components(separatedBy: " ")[0])
+                    let yourMove = toRPSMove(gameline.components(separatedBy: " ")[1])
                     score += haveYouWonRPS(opponentMove, yourMove).rawValue
-                    score += rpsVal[toRPSMove(yourMove)] ?? 0
+                    score += rpsVal[yourMove] ?? 0
                 }
                 
                 print(score)
@@ -167,11 +167,12 @@ func youSouldPlay(_ opp: RPSMove, _ expectedResult: RPSResult) -> RPSMove {
     }
 }
 
-func haveYouWonRPS(_ opp: String,_ you: String) -> RPSResult {
-    switch (opp, you) {
-    case ("A", "X"), ("B","Y"), ("C","Z"):
+func haveYouWonRPS(_ opp: RPSMove,_ you: RPSMove) -> RPSResult {
+    if opp == you {
         return .tie
-    case ("A", "Y"), ("B","Z"), ("C","X"):
+    }
+    switch (opp, you) {
+    case (.scissors, .rock), (.paper, .scissors), (.rock, .paper):
         return .won
     default:
         return .lost
