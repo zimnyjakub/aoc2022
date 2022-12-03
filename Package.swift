@@ -6,6 +6,7 @@ import PackageDescription
 let package = Package(
     name: "aoc2022",
     dependencies: [
+        .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
         // Dependencies declare other packages that this package depends on.
         // .package(url: /* package url */, from: "1.0.0"),
     ],
@@ -14,7 +15,9 @@ let package = Package(
         // Targets can depend on other targets in this package, and on products in packages this package depends on.
         .executableTarget(
             name: "aoc2022",
-            dependencies: [],
+            dependencies: [
+                .product(name: "Algorithms", package: "swift-algorithms"),
+            ],
             resources: [.process("Resources")]),
         .testTarget(
             name: "aoc2022Tests",

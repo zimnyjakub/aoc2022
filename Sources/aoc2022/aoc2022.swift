@@ -1,4 +1,5 @@
 import Foundation
+import Algorithms
 
 
 @main
@@ -7,7 +8,50 @@ public struct aoc2022 {
         //        day1()
         //        day2()
         //        day2_star2()
-        day3()
+        //        day3()
+        day3_star2()
+    }
+    
+    static func day3_star2() {
+        if let filepath = Bundle.module.path(forResource:"03_input", ofType:"txt") {
+            do {
+                let filecontent = try String(contentsOfFile: filepath)
+                
+                var items: [String] = []
+                for elveGroup in filecontent
+                    .components(separatedBy: "\n")
+                    .chunks(ofCount: 3)
+                    .map(Array.init) {
+                    let rucksack1 = Set(elveGroup[0])
+                    let rucksack2 = Set(elveGroup[1])
+                    let rucksack3 = Set(elveGroup[2])
+                    let common = rucksack1.intersection(rucksack2).intersection(rucksack3)
+                    
+                    common.map { String($0) }.forEach { items.append($0) }
+                    
+                }
+                
+                var itemPriorities: [Character: Int] = [:]
+                let smallLetters = (0..<26).map({Character(UnicodeScalar("a".unicodeScalars.first!.value + $0)!)})
+                let capitalLetters = (0..<26).map({Character(UnicodeScalar("A".unicodeScalars.first!.value + $0)!)})
+                
+                smallLetters.enumerated().forEach { (index, item) in
+                    itemPriorities[item] = index+1
+                }
+                
+                capitalLetters.enumerated().forEach { (index, item) in
+                    itemPriorities[item] = index+27
+                }
+                
+                var prioritySum = 0
+                items.forEach { prioritySum += itemPriorities[Character(UnicodeScalar($0.unicodeScalars.first!.value)!)] ?? 0 }
+                
+                print(prioritySum)
+                
+            } catch {
+                print(error)
+            }
+        }
     }
     
     static func day3() {
@@ -28,7 +72,7 @@ public struct aoc2022 {
                 var itemPriorities: [Character: Int] = [:]
                 let smallLetters = (0..<26).map({Character(UnicodeScalar("a".unicodeScalars.first!.value + $0)!)})
                 let capitalLetters = (0..<26).map({Character(UnicodeScalar("A".unicodeScalars.first!.value + $0)!)})
-
+                
                 smallLetters.enumerated().forEach { (index, item) in
                     itemPriorities[item] = index+1
                 }
