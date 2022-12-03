@@ -5,8 +5,47 @@ import Foundation
 public struct aoc2022 {
     public static func main() {
         //        day1()
-        day2()
-        day2_star2()
+        //        day2()
+        //        day2_star2()
+        day3()
+    }
+    
+    static func day3() {
+        if let filepath = Bundle.module.path(forResource:"03_input", ofType:"txt") {
+            do {
+                let filecontent = try String(contentsOfFile: filepath)
+                
+                var items: [String] = []
+                for rucksack in filecontent.components(separatedBy: "\n") {
+                    let compartmentOne = Set(rucksack.prefix(rucksack.count/2))
+                    let compartmentTwo = Set(rucksack.suffix(rucksack.count/2))
+                    let common = compartmentOne.intersection(compartmentTwo)
+                    
+                    common.map { String($0) }.forEach { items.append($0) }
+                    
+                }
+                
+                var itemPriorities: [Character: Int] = [:]
+                let smallLetters = (0..<26).map({Character(UnicodeScalar("a".unicodeScalars.first!.value + $0)!)})
+                let capitalLetters = (0..<26).map({Character(UnicodeScalar("A".unicodeScalars.first!.value + $0)!)})
+
+                smallLetters.enumerated().forEach { (index, item) in
+                    itemPriorities[item] = index+1
+                }
+                
+                capitalLetters.enumerated().forEach { (index, item) in
+                    itemPriorities[item] = index+27
+                }
+                
+                var prioritySum = 0
+                items.forEach { prioritySum += itemPriorities[Character(UnicodeScalar($0.unicodeScalars.first!.value)!)] ?? 0 }
+                
+                print(prioritySum)
+                
+            } catch {
+                print(error)
+            }
+        }
     }
     
     static func day2() {
@@ -88,6 +127,8 @@ public struct aoc2022 {
         }
     }
 }
+
+
 
 enum RPSMove {
     case rock
