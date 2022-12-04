@@ -9,7 +9,48 @@ public struct aoc2022 {
         //        day2()
         //        day2_star2()
         //        day3()
-        day3_star2()
+//        day3_star2()
+        day4()
+    }
+    
+    static func day4() {
+        if let filepath = Bundle.module.path(forResource:"04_input", ofType:"txt") {
+            do {
+                let filecontent = try String(contentsOfFile: filepath)
+                
+                var count = 0
+                var atLeastOneOverlap = 0
+                for pairs in filecontent.components(separatedBy: "\n") {
+                    let rangeAs = pairs.components(separatedBy: ",").first
+                    let rangeBs = pairs.components(separatedBy: ",").last
+                    
+                    let begginingA = Int(rangeAs!.components(separatedBy: "-").first!)!
+                    let endA = Int(rangeAs!.components(separatedBy: "-").last!)!
+                    
+                    let begginingB = Int(rangeBs!.components(separatedBy: "-").first!)!
+                    let endB = Int(rangeBs!.components(separatedBy: "-").last!)!
+                    
+                    let rangeA = Set(begginingA...endA)
+                    let rangeB = Set(begginingB...endB)
+                    
+                    if rangeA.isSubset(of: rangeB) || rangeB.isSubset(of: rangeA) {
+                        count += 1
+                    }
+                    
+                    if rangeA.intersection(rangeB).count > 0 {
+                        atLeastOneOverlap += 1
+                    }
+                    
+                    
+                }
+            
+                print("are subset of each other: \(count)")
+                print("have at least one overlap: \(atLeastOneOverlap)")
+                
+            } catch {
+                print(error)
+            }
+        }
     }
     
     static func day3_star2() {
