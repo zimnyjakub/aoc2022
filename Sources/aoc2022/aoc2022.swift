@@ -58,14 +58,16 @@ public struct aoc2022 {
                     
 //                    print("move \(howMany) from \(from) to \(to)")
                     
+                    var buf: [Character] = []
                     for _ in 0..<howMany {
                         if let popped = supplyStacks[from]?.popLast() {
-                            print("move \(howMany) from \(from) to \(to) ---> \(popped)")
-
-                            supplyStacks[to]?.append(popped)
+//                            print("move \(howMany) from \(from) to \(to) ---> \(popped)")
+                            buf.insert(popped, at: 0)
                         }
-                        
                     }
+                    supplyStacks[to]?.append(contentsOf: buf)
+                    print(buf)
+                    buf = []
                 }
                 
                 var result = ""
