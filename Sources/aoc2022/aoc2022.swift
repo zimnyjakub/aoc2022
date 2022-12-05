@@ -42,12 +42,43 @@ public struct aoc2022 {
                             crate[1].isNumber {
                             continue
                         }
-                        supplyStacks[index+1]?.append(crate[1])
+                        supplyStacks[index+1]?.insert(crate[1], at: 0)
+                    }
+                }
+                print("BEFORE")
+                print(supplyStacks.sorted(by: {$0.key < $1.key}))
+                
+                for line in filecontent.components(separatedBy: "\n") {
+                    if !line.starts(with: "move") {
+                        continue
+                    }
+                    let howMany = Int(line.components(separatedBy: " ")[1])!
+                    let from = Int(line.components(separatedBy: " ")[3])!
+                    let to = Int(line.components(separatedBy: " ").last!)!
+                    
+//                    print("move \(howMany) from \(from) to \(to)")
+                    
+                    for _ in 0..<howMany {
+                        if let popped = supplyStacks[from]?.popLast() {
+                            print("move \(howMany) from \(from) to \(to) ---> \(popped)")
+
+                            supplyStacks[to]?.append(popped)
+                        }
+                        
+                    }
+                }
+                
+                var result = ""
+                for (_,val) in supplyStacks.sorted(by: {$0.key < $1.key}) {
+                    if let letter = val.last {
+                        result.append(letter)
                     }
                     
-                    
                 }
-                print(supplyStacks)
+                
+                print("AFTER")
+                print(supplyStacks.sorted(by: {$0.key < $1.key}))
+                print("result " + result)
             } catch {
                 print(error)
             }
