@@ -10,7 +10,48 @@ public struct aoc2022 {
         //        day2_star2()
         //        day3()
 //        day3_star2()
-        day4()
+//        day4()
+        day5()
+    }
+    
+    static func day5() {
+        if let filepath = Bundle.module.path(forResource:"05_input", ofType:"txt") {
+            do {
+                let filecontent = try String(contentsOfFile: filepath)
+                
+                var supplyStacks: [Int:[Character]] = [
+                    1:[],
+                    2:[],
+                    3:[],
+                    4:[],
+                    5:[],
+                    6:[],
+                    7:[],
+                    8:[],
+                    9:[],
+                ]
+                
+                for line in filecontent.components(separatedBy: "\n") {
+                    if line.starts(with: "move") {
+                        break
+                    }
+                    let linecrates = Array(line).chunks(ofCount: 4).map(Array.init)
+                    
+                    for (index, crate) in linecrates.enumerated() {
+                        if crate[1].description.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ||
+                            crate[1].isNumber {
+                            continue
+                        }
+                        supplyStacks[index+1]?.append(crate[1])
+                    }
+                    
+                    
+                }
+                print(supplyStacks)
+            } catch {
+                print(error)
+            }
+        }
     }
     
     static func day4() {
