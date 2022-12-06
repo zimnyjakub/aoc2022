@@ -11,7 +11,54 @@ public struct aoc2022 {
         //        day3()
 //        day3_star2()
 //        day4()
-        day5()
+//        day5()
+        day6()
+    }
+    
+    static func day6() {
+        if let filepath = Bundle.module.path(forResource:"06_input", ofType:"txt") {
+            do {
+                let filecontent = try String(contentsOfFile: filepath)
+                
+                
+                var window: [Character] = []
+                var counter = 0
+                for char in filecontent {
+                    counter += 1
+                    window.append(char)
+                    if window.count <= 4 {
+                        continue
+                    }
+                    window.remove(at: 0)
+                    
+                    if Set(window).count == 4 {
+                        break
+                    }
+                }
+                
+                print(counter)
+                
+                window = []
+                counter = 0
+                for char in filecontent {
+                    counter += 1
+                    window.append(char)
+                    if window.count <= 14 {
+                        continue
+                    }
+                    window.remove(at: 0)
+                    
+                    if Set(window).count == 14 {
+                        break
+                    }
+                }
+                
+                print(counter)
+                
+            } catch {
+                print(error)
+            }
+        }
     }
     
     static func day5() {
