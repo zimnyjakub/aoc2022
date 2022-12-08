@@ -8,40 +8,70 @@ public struct aoc2022 {
         //        day2()
         //        day2_star2()
         //        day3()
-//        day3_star2()
-//        day4()
-//        day5()
+        //        day3_star2()
+        //        day4()
+        //        day5()
         // day6()
         day7()
     }
-
+    
     static func day7() {
-        if let filepath = Bundle.module.path(forResource:"07_input", ofType:"txt") {
-            do {
-                let filecontent = try String(contentsOfFile: filepath)
-
-                var pwd: [String] = []
-                for line in filecontent.components(separatedBy: "\n") {
-
-                    if line.starts(with: "$") {
-                        print("command \(line)")
-                    } else if line.starts(with: "dir") {
-                        print("directory \(line)") 
+        guard let filepath = Bundle.module.path(forResource:"07_input", ofType:"txt") else {
+            return
+        }
+        
+        let filecontent = try! String(contentsOfFile: filepath)
+        
+        
+        var pwd: [String] = ["/"]
+        
+        let fs: ElveFSNode = ElveFSNode("/")
+        for line in filecontent.components(separatedBy: "\n").dropFirst() {
+            let components = line.components(separatedBy: " ")
+            let workingDir = pwd.last!
+            
+            if components[0] == "dir" {
+                if let wd = fs.find(workingDir) {
+                    wd.add(child: ElveFSNode(components[1]))
+                }
+            }
+            
+            if let size = Int(components[0]) {
+                if let wd = fs.find(workingDir) {
+                    wd.add(child:ElveFile(name: components[1], size: size))
+                }
+            }
+            
+            if components[0] == "$" {
+                if components[1] == "ls" {
+                    continue
+                }
+                
+                if components[1] == "cd" {
+                    if components[2] == ".." {
+                        _ = pwd.popLast()
                     } else {
-                        print("file \(line)")
+                        pwd.append(components[2])
                     }
                 }
+            }
+            
+            
+        }
 
-
-                
-                
-            } catch {
-                print(error)
+        
+        
+        var sum = 0
+        for dir in fs {
+            if dir.size <= 100_000 && dir.size != 0 {
+                print(dir)
+                sum += dir.size
             }
         }
+        
+        print(sum)
+        
     }
-
-
     
     static func day6() {
         if let filepath = Bundle.module.path(forResource:"06_input", ofType:"txt") {
@@ -131,12 +161,12 @@ public struct aoc2022 {
                     let from = Int(line.components(separatedBy: " ")[3])!
                     let to = Int(line.components(separatedBy: " ").last!)!
                     
-//                    print("move \(howMany) from \(from) to \(to)")
+                    //                    print("move \(howMany) from \(from) to \(to)")
                     
                     var buf: [Character] = []
                     for _ in 0..<howMany {
                         if let popped = supplyStacks[from]?.popLast() {
-//                            print("move \(howMany) from \(from) to \(to) ---> \(popped)")
+                            //                            print("move \(howMany) from \(from) to \(to) ---> \(popped)")
                             buf.insert(popped, at: 0)
                         }
                     }
@@ -192,7 +222,7 @@ public struct aoc2022 {
                     
                     
                 }
-            
+                
                 print("are subset of each other: \(count)")
                 print("have at least one overlap: \(atLeastOneOverlap)")
                 
@@ -358,7 +388,5 @@ public struct aoc2022 {
         }
     }
 }
-
-
 
 
