@@ -12,7 +12,142 @@ public struct aoc2022 {
         //        day4()
         //        day5()
         // day6()
-        day7()
+        //        day7()
+//        day8()
+        day8_star2()
+    }
+    
+    static func day8_star2() {
+        guard let filepath = Bundle.module.path(forResource:"08_input", ofType:"txt") else {
+            return
+        }
+        
+        let filecontent = try! String(contentsOfFile: filepath)
+        
+        var rows: [[Character]] = []
+        for row in filecontent.components(separatedBy: "\n") {
+            let cols = Array(row)
+            
+            rows.append(cols)
+        }
+        let forest = rows.map { $0.map { Int(String($0))!}}.dropLast(1)
+    
+        var bestScenicScoreSoFar = 0
+        for (x,row) in forest.enumerated() {
+            for (y,val) in row.enumerated() {
+                if (x == 0 || x == row.count-1 || y == 0 || y == forest.count-1) {
+                    continue
+                } else {
+                    var left = 0
+                    for l in (0..<x).reversed() {
+                        if val > forest[l][y] {
+                            left += 1
+                        } else if val == forest[l][y] {
+                            left += 1
+                            break
+                        }
+                    }
+                    var right = 0
+                    for r in x+1...row.count-1 {
+                        if val > forest[r][y] {
+                            right += 1
+                        } else if val == forest[r][y] {
+                            right += 1
+                            break
+                        }
+                    }
+                    var top = 0
+                    for t in (0..<y).reversed() {
+                        if val > forest[x][t] {
+                            top += 1
+                        } else if val == forest[x][t] {
+                            top += 1
+                            break
+                        }
+                    }
+                    var bottom = 0
+                    for b in y+1...forest.count-1 {
+                        if val > forest[x][b] {
+                            bottom += 1
+                        } else if val == forest[x][b] {
+                            bottom += 1
+                            break
+                        }
+                    }
+                    print("(\(x),\(y)):\(val) L:\(left) R:\(right) T:\(top) B:\(bottom)")
+                    let scenicScore = left * right * top * bottom
+                    if scenicScore > bestScenicScoreSoFar {
+                        bestScenicScoreSoFar = scenicScore
+                    }
+                }
+            }
+        }
+        
+        print(bestScenicScoreSoFar)
+    }
+    
+    static func day8() {
+        guard let filepath = Bundle.module.path(forResource:"08_input", ofType:"txt") else {
+            return
+        }
+        
+        let filecontent = try! String(contentsOfFile: filepath)
+        
+        var rows: [[Character]] = []
+        for row in filecontent.components(separatedBy: "\n") {
+            let cols = Array(row)
+            
+            rows.append(cols)
+        }
+        let forest = rows.map { $0.map { Int(String($0))!}}.dropLast(1)
+        
+        var amount = 0
+        
+        for (x,row) in forest.enumerated() {
+            for (y,val) in row.enumerated() {
+                
+
+                if (x == 0 || x == row.count-1 || y == 0 || y == forest.count-1) {
+                    print("current value \(val) at: \(x),\(y) EDGE")
+                    amount += 1
+                } else {
+                    var left = true
+                    for l in 0..<x {
+                        if val <= forest[l][y] {
+                            left = false
+                            break
+                        }
+                    }
+                    var right = true
+                    for r in x+1...row.count-1 {
+                        if val <= forest[r][y] {
+                            right = false
+                            break
+                        }
+                    }
+                    var top = true
+                    for t in 0..<y {
+                        if val <= forest[x][t] {
+                            top = false
+                            break
+                        }
+                    }
+                    var bottom = true
+                    for b in y+1...forest.count-1 {
+                        if val <= forest[x][b] {
+                            bottom = false
+                            break
+                        }
+                    }
+                    print("current value \(val) at: \(x),\(y) L:\(left) R:\(right) T:\(top) B:\(bottom)")
+                    if left || right || top || bottom {
+                        amount += 1
+                    }
+                }
+            }
+        }
+        
+        print(amount)
     }
     
     static func day7() {
@@ -58,7 +193,7 @@ public struct aoc2022 {
             
             
         }
-
+        
         
         
         var sum = 0

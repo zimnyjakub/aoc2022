@@ -13,6 +13,7 @@ dir tjtccqtm
 $ cd jpmf
 $ ls
 dir ncfcchsz
+/Users/jakubzimny/projects/aoc2022/Sources/aoc2022/Resources/08_input.txt
 dir rfb
 dir tjtccqtm
 $ cd ncfcchsz
